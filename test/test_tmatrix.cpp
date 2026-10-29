@@ -1,6 +1,6 @@
 #include "tmatrix.h"
-
 #include <gtest.h>
+#include <sstream>
 
 TEST(TDynamicMatrix, can_create_matrix_with_positive_length)
 {

@@ -219,3 +219,12 @@ TEST(TDynamicMatrix, can_write_matrix_to_stream)
     EXPECT_EQ("1 2 \n3 4 \n", out.str());
 }
 
+TEST(TDynamicMatrix, can_read_matrix)
+{
+  ADD_FAILURE();
+}
+
+TEST(TDynamicMatrix, can_write_matrix)
+{
+  ADD_FAILURE();
+}

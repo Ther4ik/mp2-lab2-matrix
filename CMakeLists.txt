@@ -1,6 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.30)
 
-option(BUILD_SAMPLES ON)
+# disable googlemock
+option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
+
+option(BUILD_SAMPLES "Builds all samples" ON)
 
 set(PROJECT_NAME matrix)
 project(${PROJECT_NAME})
@@ -10,7 +13,7 @@ enable_testing()  # defines BUILD_TESTING
 
 set(MP2_TESTS   "test_${PROJECT_NAME}")
 set(MP2_CUSTOM_PROJECT "${PROJECT_NAME}")
-set(MP2_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(MP2_INCLUDES "${PROJECT_SOURCE_DIR}/include")
 
 add_subdirectory(include)
 
@@ -19,7 +22,10 @@ if(BUILD_SAMPLES)
 endif()
 
 if(BUILD_TESTING)
-    add_subdirectory(gtest)
+    # add googletest, version 1.18.0
+    add_subdirectory("${PROJECT_SOURCE_DIR}/gtest/googletest-1.18.0")
+    set(MP2_GTEST_INCLUDES "${gtest_SOURCE_DIR}/include/gtest")
+
 	add_subdirectory(test)
 endif()
 

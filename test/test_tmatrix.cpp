@@ -198,7 +198,7 @@ TEST(TDynamicMatrix, can_multiply_matrices)
     EXPECT_EQ(50, r[1][1]);
 }
 
-TEST(TDynamicMatrix, can_read_matrix_from_stream)
+TEST(TDynamicMatrix, can_read_matrix)
 {
     std::istringstream in("1 2 3 4");
     TDynamicMatrix<int> m(2);
@@ -210,21 +210,12 @@ TEST(TDynamicMatrix, can_read_matrix_from_stream)
     EXPECT_EQ(4, m[1][1]);
 }
 
-TEST(TDynamicMatrix, can_write_matrix_to_stream)
-{
-    TDynamicMatrix<int> m = makeSequential(2);
-    std::ostringstream out;
-    out << m;
-
-    EXPECT_EQ("1 2 \n3 4 \n", out.str());
-}
-
-TEST(TDynamicMatrix, can_read_matrix)
-{
-  ADD_FAILURE();
-}
-
 TEST(TDynamicMatrix, can_write_matrix)
 {
-  ADD_FAILURE();
+    TDynamicMatrix<int> m = makeSequential(2);
+
+    std::stringstream sstr;
+    sstr << m;
+
+    EXPECT_EQ("1 2 \n3 4 \n", sstr.str());
 }

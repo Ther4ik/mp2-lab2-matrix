@@ -38,12 +38,45 @@ TEST(TDynamicVector, can_create_copied_vector)
 
 TEST(TDynamicVector, can_move_vector_using_move_constructor)
 {
-  ADD_FAILURE();
+    int arr[] = { 1, 2, 3 };
+    TDynamicVector<int> v(arr, 3);
+    int* oldMem = &v[0]; // адрес памяти до перемещения
+
+    TDynamicVector<int> moved(std::move(v));
+
+    EXPECT_EQ(3u, moved.size());
+    EXPECT_EQ(1, moved[0]);
+    EXPECT_EQ(2, moved[1]);
+    EXPECT_EQ(3, moved[2]);
+    EXPECT_EQ(oldMem, &moved[0]); // память передана
+    EXPECT_EQ(0u, v.size());                
 }
 
 TEST(TDynamicVector, can_move_vector_using_move_operator)
 {
-  ADD_FAILURE();
+    int arr[] = { 1, 2, 3 };
+    TDynamicVector<int> v(arr, 3), v1(5);
+    int* oldMem = &v[0]; // адрес памяти до перемещения
+
+    v1 = std::move(v);
+
+    EXPECT_EQ(3u, v1.size());
+    EXPECT_EQ(1, v1[0]);
+    EXPECT_EQ(2, v1[1]);
+    EXPECT_EQ(3, v1[2]);
+    EXPECT_EQ(oldMem, &v1[0]); // память передана
+    EXPECT_EQ(0u, v.size());
+}
+
+TEST(TDynamicVector, move_operator_handles_self_assignment)
+{
+    int arr[] = { 1, 2, 3 };
+    TDynamicVector<int> v(arr, 3);
+    TDynamicVector<int>& ref = v; // через ссылку, чтобы компилятор не ругался на self-move
+
+    ASSERT_NO_THROW(v = std::move(ref));
+    EXPECT_EQ(3u, v.size());
+    EXPECT_EQ(2, v[1]); // данные не потеряны (ветка this == &v)
 }
 
 TEST(TDynamicVector, copied_vector_is_equal_to_source_one)
@@ -261,7 +294,8 @@ TEST(TDynamicVector, can_read_vector)
 {
   TDynamicVector<int> v(5);
   TDynamicVector<int> expected(5);
-  for (int i = 0; i < 5; i++) expected[i] = i;
+  for (int i = 0; i < 5; i++) 
+      expected[i] = i + 1;
   
   std::stringstream sstr;
   sstr << "1 2 3 4 5\n";
@@ -272,8 +306,9 @@ TEST(TDynamicVector, can_read_vector)
 
 TEST(TDynamicVector, can_write_vector)
 {
-  TDynamicVector<int> v;
-  for (int i = 0; i < 5; i++) v[i] = i;
+  TDynamicVector<int> v(5);
+  for (int i = 0; i < 5; i++) 
+      v[i] = i + 1 ;
   std::string expected = "1 2 3 4 5 ";
   
   std::stringstream sstr;

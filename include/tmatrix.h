@@ -395,7 +395,6 @@ public:
 
       return ostr;
   }
-
 };
 
 #endif
